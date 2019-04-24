@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<h:head>
+    <title>Facelet Title</title>
+</h:head>
+<h:body>
+    <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+        <input type="hidden" name="cmd" value="_cart"></input> 
+        <input type="hidden" name="upload" value="1"></input> 
+        <c:set var="dem" value="1"></c:set>
+        <c:forEach items="#{shoppingCart.cart}" var="i">
+            <input type="hidden" name="item_number_#{dem}" 
+                   value="#{i.p.proaId}"></input>
+
+            <input type="hidden" name="item_name_#{dem}" 
+                   value="#{i.p.proName}"></input>
+
+            <input type="hidden" name="quantity_#{dem}" 
+                   value="#{i.quantity}"></input>
+
+            <input type="hidden" name="amount_#{dem}" 
+                   value="#{i.p.proPrice}"></input>
+
+            <c:set var="dem" value="#{dem+1}"></c:set>
+
+        </c:forEach>
+
+        <input type="hidden" name="business" 
+               value="business1_so@gmail.com"></input>
+
+        <input type="hidden" name="return" 
+               value="http://localhost:8080/shop_online/success.xhtml"></input>
+
+        <input type="hidden" name="cancel" 
+               value="http://localhost:8080/shop_online/fail.xhtml"></input>
+        
+        <input type="image" name="submit" border="0" 
+               src="https://www.paypalobjects.com/enUS/i/btn/btnbuynowLG.gif"
+               alt="PayPal - The safer, easier way to pay online"></input>
+        
+        
+    </form>
+</h:body>
+</html>
+

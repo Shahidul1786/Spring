@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>Facelet Title</title>
+        <meta http-equiv="Content_Type" content="text/html; charset=UTF-8"/>
+        <style>
+            .product{
+                width: 150px;
+                height: 200px;
+                float: left;
+                margin-right: 10px;
+                
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+
+            <p:panel header="Cart" >
+                <h:outputText  value="Item: #{shoppingCart.cartsize}  #{ShoppingCart.item}" id="cart" />
+                 <p:commandButton value="View Cart" action="viewcart.xhtml"></p:commandButton>
+                
+                <h:outputLink  value="ShowReport.jsp">Show Report</h:outputLink>
+                
+               
+                
+                
+            </p:panel>
+            <p:dataGrid var="p" value="#{displayProductMB.allProduct}"
+                        columns="3" rows="10" paginator="true" id="p"
+                        paginatorTemplate="{CurrentPageReport} {FirstPageLink}
+                        {PreviousPageLink} {PageLinks} {NextPageLink}  {LastPageLink} "
+                        rowsPerPageTemplate="6,12,10">
+
+                <f:facet name="header">
+                    <h:outputLabel value="All Products"></h:outputLabel>
+                </f:facet>
+
+                <p:panel header="Name: #{p.proName}">
+                    <h:panelGrid columns="1">
+                        <h:graphicImage name="#{p.proUrl}" library="images" width="200" height="230"></h:graphicImage>
+                        <h:outputText value="Price: #{p.proPrice}"></h:outputText>
+
+                        <h:outputText value="Quantity"></h:outputText>
+                       <!-- <h:inputText binding="#{input1}"></h:inputText> -->
+
+                        <p:commandButton action="#{shoppingCart.addtoCart(p)}" value="Add to cart" update=":form:cart" ajax="false" >
+                          
+                        </p:commandButton>
+                        
+                    </h:panelGrid>
+                    
+                    <p:commandLink update=":form:pro" oncomplete="PF('proDetails').show()" title="View Details">
+                        <h:outputText styleClass="ui-icon ui-icon-search"/>
+                        <f:setPropertyActionListener value="#{p}" target="#{displayProductMB.selectedProduct}"></f:setPropertyActionListener>
+                    </p:commandLink>
+
+                </p:panel>
+
+            </p:dataGrid>
+
+            <p:dialog header="Product info" widgetVar="proDetails" modal="true"
+                      showEffect="fade" hideEffect="fade" rendererType="false">
+                <p:outputPanel id="pro">
+                    <p:panelGrid columns="2">
+                        <f:facet name="header">
+                            <h:graphicImage name="#{displayProductMB.selectedProduct.proUrl}" library="images" width="230" height="230"></h:graphicImage>  
+                        </f:facet>
+                        <h:outputText value="Price USD $"></h:outputText>
+                        <h:outputText value="#{displayProductMB.selectedProduct.proPrice}"></h:outputText>
+
+                        <h:outputText value="Price Quantity"></h:outputText>
+                        <h:outputText value="#{displayProductMB.selectedProduct.proQty}"></h:outputText>
+                        
+                        <h:outputText value=" Description "></h:outputText>
+                        
+                        <h:outputText value="#{displayProductMB.selectedProduct.proDesc}"></h:outputText>
+                       
+                    </p:panelGrid>
+                </p:outputPanel>
+
+            </p:dialog>
+        </h:form>
+    </h:body>
+</html>
+
